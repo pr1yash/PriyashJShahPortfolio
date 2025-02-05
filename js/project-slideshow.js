@@ -1,25 +1,48 @@
-let project = document.getElementsByClassName("project");
+// Get all project elements
+let projects = document.getElementsByClassName("project");
 let slideIndex = 1;
 
+// Hide arrows if only one or no project exists
+if (projects.length < 2) {
+  let arrows = document.getElementsByClassName("arrow");
+  for (let i = 0; i < arrows.length; i++) {
+    arrows[i].style.display = "none";
+  }
+}
+
+// Initialize the project display
 showProject(slideIndex);
 
 function showProject(num) {
-  // Go to first project, after clicking forward from last button
-  if (num > project.length) {
-    slideIndex = 1;
+  // If there are no projects, prevent errors
+  if (projects.length === 0) {
+    console.warn("No projects to display.");
+    return;
   }
-  // Go to last project, when clicking backwards from first project
+
+  // Ensure slideIndex stays within range
+  if (num > projects.length) {
+    slideIndex = 1; // Go to first project
+  }
   if (num < 1) {
-    slideIndex = project.length;
+    slideIndex = projects.length; // Go to last project
   }
-  // For loop to hide all the projects
-  for (let i = 0; i < project.length; i++) {
-    project[i].style.display = "none";
+
+  // Hide all projects
+  for (let i = 0; i < projects.length; i++) {
+    projects[i].style.display = "none";
   }
-  project[slideIndex - 1].style.display = "flex";
+
+  // Display the current project
+  if (projects[slideIndex - 1]) {
+    projects[slideIndex - 1].style.display = "flex";
+  }
 }
 
 function navigateProject(num) {
-  // Change the slideIndex based on back or forward arrow
+  if (projects.length === 0) {
+    console.warn("No projects available for navigation.");
+    return;
+  }
   showProject((slideIndex += num));
 }
